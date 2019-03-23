@@ -1,0 +1,59 @@
+######################################################################
+# Build Tools
+
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+######################################################################
+# IDE
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/*
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+######################################################################
+# Others
+*.log
+*.xml.versionsBackup
+
+!*/build/*.java
+!*/build/*.html
+!*/build/*.xml
+/ruoyi-admin/.settings
+/ruoyi-admin/target
+/ruoyi-admin/.classpath
+/ruoyi-admin/.project
+/ruoyi-common/.settings
+/ruoyi-common/target
+/ruoyi-common/.classpath
+/ruoyi-common/.project
+/ruoyi-framework/.settings
+/ruoyi-framework/target
+/ruoyi-framework/.classpath
+/ruoyi-framework/.project
+/ruoyi-generator/target
+/ruoyi-generator/.classpath
+/ruoyi-generator/.project
+/ruoyi-generator/.settings
