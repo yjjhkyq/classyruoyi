@@ -92,5 +92,5 @@ public interface ISysDeptService
      * @param dept 部门信息
      * @return 结果
      */
-    public String checkDeptNameUnique(SysDept dept);
+    public boolean checkDeptNameUnique(SysDept dept);
 }

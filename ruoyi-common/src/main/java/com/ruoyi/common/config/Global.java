@@ -16,7 +16,7 @@ import com.ruoyi.common.utils.YamlUtil;
 public class Global
 {
     private static final Logger log = LoggerFactory.getLogger(Global.class);
-
+    
     private static String NAME = "application.yml";
 
     /**

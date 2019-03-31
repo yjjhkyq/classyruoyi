@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ruoyi.system.domain.SysDictType;
 
 /**
@@ -16,14 +18,7 @@ public interface ISysDictTypeService
      * @param dictType 字典类型信息
      * @return 字典类型集合信息
      */
-    public List<SysDictType> selectDictTypeList(SysDictType dictType);
-
-    /**
-     * 根据所有字典类型
-     * 
-     * @return 字典类型集合信息
-     */
-    public List<SysDictType> selectDictTypeAll();
+    public IPage<SysDictType> selectDictTypeList(IPage<SysDictType> page, SysDictType dictType);
 
     /**
      * 根据字典类型ID查询信息
@@ -72,5 +67,5 @@ public interface ISysDictTypeService
      * @param dictType 字典类型
      * @return 结果
      */
-    public String checkDictTypeUnique(SysDictType dictType);
+    public boolean checkDictTypeUnique(SysDictType dictType);
 }

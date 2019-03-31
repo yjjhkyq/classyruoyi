@@ -206,11 +206,11 @@ public class ApiAssert {
 //        }
 //    }
 //
-//    public static void isTrue(ErrorCode errorCode, boolean condition) {
-//        if (!condition) {
-//            failure(errorCode);
-//        }
-//    }
+    public static void isTrue(ErrorCode errorCode, boolean condition) {
+        if (!condition) {
+            failure(errorCode);
+        }
+    }
 
     public static void isFalse(ErrorCode errorCode, boolean condition) {
         if (condition) {

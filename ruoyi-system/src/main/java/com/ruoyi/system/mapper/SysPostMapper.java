@@ -1,6 +1,12 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.system.domain.SysPost;
 
 /**
@@ -8,7 +14,7 @@ import com.ruoyi.system.domain.SysPost;
  * 
  * @author ruoyi
  */
-public interface SysPostMapper
+public interface SysPostMapper extends BaseMapper<SysPost>
 {
     /**
      * 查询岗位数据集合
@@ -16,8 +22,8 @@ public interface SysPostMapper
      * @param post 岗位信息
      * @return 岗位数据集合
      */
-    public List<SysPost> selectPostList(SysPost post);
-
+    public IPage<SysPost> selectPostList(@Param("pg")Page<SysPost> page, @Param("sm")SysPost post);
+    
     /**
      * 查询所有岗位
      * 
@@ -32,38 +38,6 @@ public interface SysPostMapper
      * @return 岗位列表
      */
     public List<SysPost> selectPostsByUserId(Long userId);
-
-    /**
-     * 通过岗位ID查询岗位信息
-     * 
-     * @param postId 岗位ID
-     * @return 角色对象信息
-     */
-    public SysPost selectPostById(Long postId);
-
-    /**
-     * 批量删除岗位信息
-     * 
-     * @param ids 需要删除的数据ID
-     * @return 结果
-     */
-    public int deletePostByIds(Long[] ids);
-
-    /**
-     * 修改岗位信息
-     * 
-     * @param post 岗位信息
-     * @return 结果
-     */
-    public int updatePost(SysPost post);
-
-    /**
-     * 新增岗位信息
-     * 
-     * @param post 岗位信息
-     * @return 结果
-     */
-    public int insertPost(SysPost post);
 
     /**
      * 校验岗位名称

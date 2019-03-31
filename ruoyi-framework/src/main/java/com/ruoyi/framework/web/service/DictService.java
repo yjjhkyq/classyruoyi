@@ -25,7 +25,9 @@ public class DictService
      */
     public List<SysDictData> getType(String dictType)
     {
-        return dictDataService.selectDictDataByType(dictType);
+    	SysDictData model = new SysDictData();
+    	model.setDictType(dictType);
+        return dictDataService.selectDictData(model);
     }
 
     /**

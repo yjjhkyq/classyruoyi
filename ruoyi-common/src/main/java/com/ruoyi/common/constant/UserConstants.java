@@ -20,7 +20,7 @@ public class UserConstants
     public static final String ROLE_BLOCKED = "1";
 
     /** 部门正常状态 */
-    public static final String DEPT_NORMAL = "0";
+    public static final Integer DEPT_NORMAL = 0;
 
     /**
      * 用户名长度限制

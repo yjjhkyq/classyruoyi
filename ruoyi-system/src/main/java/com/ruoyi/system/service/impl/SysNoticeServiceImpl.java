@@ -1,8 +1,12 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ruoyi.common.support.Convert;
 import com.ruoyi.system.domain.SysNotice;
 import com.ruoyi.system.mapper.SysNoticeMapper;
@@ -23,25 +27,26 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     /**
      * 查询公告信息
      * 
-     * @param noticeId 公告ID
+     * @param notice 查询条件
      * @return 公告信息
      */
     @Override
-    public SysNotice selectNoticeById(Long noticeId)
+    public List<SysNotice> selectNotice(SysNotice notice)
     {
-        return noticeMapper.selectNoticeById(noticeId);
+        return noticeMapper.selectNotice(notice);
     }
 
     /**
      * 查询公告列表
      * 
      * @param notice 公告信息
+     * @param page 分页
      * @return 公告集合
      */
     @Override
-    public List<SysNotice> selectNoticeList(SysNotice notice)
+    public IPage<SysNotice> selectNoticeList(IPage<SysNotice> page, SysNotice notice)
     {
-        return noticeMapper.selectNoticeList(notice);
+        return noticeMapper.selectNoticeList(page, notice);
     }
 
     /**
@@ -53,7 +58,7 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     @Override
     public int insertNotice(SysNotice notice)
     {
-        return noticeMapper.insertNotice(notice);
+        return noticeMapper.insert(notice);
     }
 
     /**
@@ -65,7 +70,7 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     @Override
     public int updateNotice(SysNotice notice)
     {
-        return noticeMapper.updateNotice(notice);
+        return noticeMapper.updateById(notice);
     }
 
     /**
@@ -77,6 +82,6 @@ public class SysNoticeServiceImpl implements ISysNoticeService
     @Override
     public int deleteNoticeByIds(String ids)
     {
-        return noticeMapper.deleteNoticeByIds(Convert.toStrArray(ids));
+        return noticeMapper.deleteBatchIds(Arrays.asList(Convert.toStrArray(ids)));
     }
 }

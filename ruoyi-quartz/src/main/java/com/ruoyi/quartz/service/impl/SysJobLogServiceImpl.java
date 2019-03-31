@@ -18,7 +18,7 @@ public class SysJobLogServiceImpl implements ISysJobLogService
 {
     @Autowired
     private SysJobLogMapper jobLogMapper;
-
+    
     /**
      * 获取quartz调度器日志的计划任务
      * 

@@ -1,6 +1,7 @@
 package com.ruoyi.web.restcontroller.system.models;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -27,4 +28,39 @@ public class BaseModel {
     /** 更新时间 */
     @ApiModelProperty("更新时间")
     private LocalDateTime updateTime;
+    
+    /** 备注 */
+    @ApiModelProperty("备注")
+    private String remark;
+
+    /** 搜索值 */
+    private String searchValue;
+    
+    /** 请求参数 */
+    private Map<String, Object> params;
+    
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public String getSearchValue() {
+		return searchValue;
+	}
+
+	public void setSearchValue(String searchValue) {
+		this.searchValue = searchValue;
+	}
+
+	public Map<String, Object> getParams() {
+		return params;
+	}
+
+	public void setParams(Map<String, Object> params) {
+		this.params = params;
+	}
+
 }

@@ -1,9 +1,14 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.common.constant.UserConstants;
+
+import com.ruoyi.common.json.JSON;
 import com.ruoyi.common.support.Convert;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysConfig;
@@ -18,36 +23,20 @@ import com.ruoyi.system.service.ISysConfigService;
 @Service
 public class SysConfigServiceImpl implements ISysConfigService
 {
+	private static final Logger logger = LoggerFactory.getLogger(SysConfigServiceImpl.class);
     @Autowired
     private SysConfigMapper configMapper;
 
     /**
      * 查询参数配置信息
      * 
-     * @param configId 参数配置ID
+     * @param config 参数配置
      * @return 参数配置信息
      */
     @Override
-    public SysConfig selectConfigById(Long configId)
+    public List<SysConfig> selectConfigBy(SysConfig config)
     {
-        SysConfig config = new SysConfig();
-        config.setConfigId(configId);
         return configMapper.selectConfig(config);
-    }
-
-    /**
-     * 根据键名查询参数配置信息
-     * 
-     * @param configKey 参数key
-     * @return 参数键值
-     */
-    @Override
-    public String selectConfigByKey(String configKey)
-    {
-        SysConfig config = new SysConfig();
-        config.setConfigKey(configKey);
-        SysConfig retConfig = configMapper.selectConfig(config);
-        return StringUtils.isNotNull(retConfig) ? retConfig.getConfigValue() : "";
     }
 
     /**
@@ -71,7 +60,7 @@ public class SysConfigServiceImpl implements ISysConfigService
     @Override
     public int insertConfig(SysConfig config)
     {
-        return configMapper.insertConfig(config);
+        return configMapper.insert(config);
     }
 
     /**
@@ -83,7 +72,7 @@ public class SysConfigServiceImpl implements ISysConfigService
     @Override
     public int updateConfig(SysConfig config)
     {
-        return configMapper.updateConfig(config);
+        return configMapper.updateById(config);
     }
 
     /**
@@ -95,7 +84,7 @@ public class SysConfigServiceImpl implements ISysConfigService
     @Override
     public int deleteConfigByIds(String ids)
     {
-        return configMapper.deleteConfigByIds(Convert.toStrArray(ids));
+        return configMapper.deleteBatchIds(Arrays.asList(Convert.toStrArray(ids)));
     }
 
     /**
@@ -105,14 +94,14 @@ public class SysConfigServiceImpl implements ISysConfigService
      * @return 结果
      */
     @Override
-    public String checkConfigKeyUnique(SysConfig config)
+    public boolean checkConfigKeyUnique(SysConfig config)
     {
         Long configId = StringUtils.isNull(config.getConfigId()) ? -1L : config.getConfigId();
         SysConfig info = configMapper.checkConfigKeyUnique(config.getConfigKey());
         if (StringUtils.isNotNull(info) && info.getConfigId().longValue() != configId.longValue())
         {
-            return UserConstants.CONFIG_KEY_NOT_UNIQUE;
+            return false;
         }
-        return UserConstants.CONFIG_KEY_UNIQUE;
+        return true;
     }
 }

@@ -2,6 +2,10 @@ package com.ruoyi.web.restcontroller.system;
 
 import java.util.List;
 
+import javax.validation.constraints.Positive;
+
+import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.util.StringUtil;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
@@ -40,10 +45,10 @@ public class SysDeptController extends BaseController
    @RequiresPermissions("system:dept:list")
    @PostMapping("/list")
    @ResponseBody
-   public List<SysDept> list(@RequestBody SysDept dept)
+   public AjaxResult list(@RequestBody SysDept dept)
    {
        List<SysDept> deptList = deptService.selectDeptList(dept);
-       return deptList;
+       return success(deptList);
    }
 
    /**
@@ -51,16 +56,12 @@ public class SysDeptController extends BaseController
     */
    @Log(title = "部门管理", businessType = BusinessType.INSERT)
    @ApiOperation("新增部门")
-   @RequiresPermissions("system:dept:add")
-   @PostMapping("/add")
-   public AjaxResult add(@RequestBody @Validated(SysDeptModel.Create.class) SysDeptModel dept)
+   @RequiresPermissions("system:dept:create")
+   @PostMapping("/create")
+   public AjaxResult create(@RequestBody @Validated(SysDeptModel.Create.class) SysDeptModel dept)
    {
-	   SysDept condition = new SysDept();
-	   condition.setParentId(dept.getParentId());
-	   condition.setDeptName(dept.getDeptName());
-	   List<SysDept> list = deptService.selectDeptList(condition);
-	   ApiAssert.isEmpty(ErrorCode.DeptNameDuplicated, list);
 	   SysDept entity = BeanConverter.convert(SysDept.class, dept);
+	   ApiAssert.isTrue(ErrorCode.DeptNameDuplicated, deptService.checkDeptNameUnique(entity));
 	   deptService.insertDept(entity);
 	   return this.success();
    }
@@ -73,7 +74,7 @@ public class SysDeptController extends BaseController
    @PostMapping("/getby")
    public AjaxResult getby(@RequestBody @Validated SysDept dept)
    {
-       return this.success(deptService.selectDeptList(dept));
+       return this.success(deptService.selectDeptById(dept.getDeptId()));
    }
 
    /**
@@ -88,11 +89,8 @@ public class SysDeptController extends BaseController
 	   SysDept condition = new SysDept();
 	   condition.setParentId(model.getParentId());
 	   condition.setDeptName(model.getDeptName());
-	   List<SysDept> list = deptService.selectDeptList(condition);
-	   if (null != list && list.stream().anyMatch(s-> s.getDeptId() != model.getDeptId())) {
-		return error(ErrorCode.DeptNameDuplicated);
-	   }
 	   SysDept dept = BeanConverter.convert(SysDept.class, model);
+	   ApiAssert.isTrue(ErrorCode.DeptNameDuplicated, deptService.checkDeptNameUnique(condition));
 	   deptService.updateDept(dept);
        return success();
    }
@@ -102,9 +100,9 @@ public class SysDeptController extends BaseController
     */
    @ApiOperation("删除部门")
    @Log(title = "部门管理", businessType = BusinessType.DELETE)
-   @RequiresPermissions("system:dept:remove")
-   @PostMapping("/remove")
-   public AjaxResult remove( Long deptId)
+   @RequiresPermissions("system:dept:delete")
+   @PostMapping("/delete")
+   public AjaxResult delete( Long deptId)
    {
        if (deptService.selectDeptCount(deptId) > 0)
        {

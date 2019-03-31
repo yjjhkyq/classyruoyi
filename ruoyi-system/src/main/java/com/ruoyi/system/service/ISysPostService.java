@@ -1,6 +1,9 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.system.domain.SysPost;
 
 /**
@@ -16,14 +19,7 @@ public interface ISysPostService
      * @param post 岗位信息
      * @return 岗位信息集合
      */
-    public List<SysPost> selectPostList(SysPost post);
-
-    /**
-     * 查询所有岗位
-     * 
-     * @return 岗位列表
-     */
-    public List<SysPost> selectPostAll();
+    public IPage<SysPost> selectPostList(Page<SysPost> page, SysPost post);
 
     /**
      * 根据用户ID查询岗位
@@ -80,7 +76,7 @@ public interface ISysPostService
      * @param post 岗位信息
      * @return 结果
      */
-    public String checkPostNameUnique(SysPost post);
+    public boolean checkPostNameUnique(SysPost post);
 
     /**
      * 校验岗位编码
@@ -88,5 +84,5 @@ public interface ISysPostService
      * @param post 岗位信息
      * @return 结果
      */
-    public String checkPostCodeUnique(SysPost post);
+    public boolean checkPostCodeUnique(SysPost post);
 }

@@ -1,9 +1,11 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.List;
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.common.constant.UserConstants;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.support.Convert;
 import com.ruoyi.common.utils.StringUtils;
@@ -33,21 +35,11 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
      * @return 字典类型集合信息
      */
     @Override
-    public List<SysDictType> selectDictTypeList(SysDictType dictType)
+    public IPage<SysDictType> selectDictTypeList(IPage<SysDictType> page, SysDictType dictType)
     {
-        return dictTypeMapper.selectDictTypeList(dictType);
+        return dictTypeMapper.selectDictTypeList(page, dictType);
     }
 
-    /**
-     * 根据所有字典类型
-     * 
-     * @return 字典类型集合信息
-     */
-    @Override
-    public List<SysDictType> selectDictTypeAll()
-    {
-        return dictTypeMapper.selectDictTypeAll();
-    }
 
     /**
      * 根据字典类型ID查询信息
@@ -58,7 +50,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public SysDictType selectDictTypeById(Long dictId)
     {
-        return dictTypeMapper.selectDictTypeById(dictId);
+        return dictTypeMapper.selectById(dictId);
     }
 
     /**
@@ -70,7 +62,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public int deleteDictTypeById(Long dictId)
     {
-        return dictTypeMapper.deleteDictTypeById(dictId);
+        return dictTypeMapper.deleteById(dictId);
     }
 
     /**
@@ -91,8 +83,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
                 throw new BusinessException(String.format("%1$s已分配,不能删除", dictType.getDictName()));
             }
         }
-
-        return dictTypeMapper.deleteDictTypeByIds(dictIds);
+        return dictTypeMapper.deleteBatchIds(Arrays.asList(dictIds));
     }
 
     /**
@@ -104,7 +95,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public int insertDictType(SysDictType dictType)
     {
-        return dictTypeMapper.insertDictType(dictType);
+        return dictTypeMapper.insert(dictType);
     }
 
     /**
@@ -116,9 +107,9 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
     @Override
     public int updateDictType(SysDictType dictType)
     {
-        SysDictType oldDict = dictTypeMapper.selectDictTypeById(dictType.getDictId());
+        SysDictType oldDict = dictTypeMapper.selectById(dictType.getDictId());
         dictDataMapper.updateDictDataType(oldDict.getDictType(), dictType.getDictType());
-        return dictTypeMapper.updateDictType(dictType);
+        return dictTypeMapper.updateById(dictType);
     }
 
     /**
@@ -128,14 +119,14 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
      * @return 结果
      */
     @Override
-    public String checkDictTypeUnique(SysDictType dict)
+    public boolean checkDictTypeUnique(SysDictType dict)
     {
         Long dictId = StringUtils.isNull(dict.getDictId()) ? -1L : dict.getDictId();
         SysDictType dictType = dictTypeMapper.checkDictTypeUnique(dict.getDictType());
         if (StringUtils.isNotNull(dictType) && dictType.getDictId().longValue() != dictId.longValue())
         {
-            return UserConstants.DICT_TYPE_NOT_UNIQUE;
+            return false;
         }
-        return UserConstants.DICT_TYPE_UNIQUE;
+        return true;
     }
 }

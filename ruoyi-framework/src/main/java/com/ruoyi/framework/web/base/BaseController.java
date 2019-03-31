@@ -3,16 +3,21 @@ package com.ruoyi.framework.web.base;
 import java.beans.PropertyEditorSupport;
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.constant.PageCons;
 import com.ruoyi.common.enums.ErrorCode;
 import com.ruoyi.common.page.PageDomain;
 import com.ruoyi.common.page.TableDataInfo;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.util.ServletUtils;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.framework.web.page.TableSupport;
 import com.ruoyi.system.domain.SysUser;
@@ -171,4 +176,31 @@ public class BaseController
     {
         return getSysUser().getLoginName();
     }
+    
+    /**
+     * 获取分页对象
+     *
+     * @return
+     */
+    protected <T> Page<T> getPage() {
+        return getPage(false);
+    }
+
+    /**
+     * 获取分页对象
+     *
+     * @param openSort
+     * @return
+     */
+    protected <T> Page<T> getPage(boolean openSort) {
+        int index = 1;
+        // 页数
+        Integer cursor = ServletUtils.getParameterToInt(PageCons.PAGE_PAGE, index);
+        // 分页大小
+        Integer limit = ServletUtils.getParameterToInt(PageCons.PAGE_ROWS, PageCons.DEFAULT_LIMIT);
+        limit = limit > PageCons.MAX_LIMIT ? PageCons.MAX_LIMIT : limit;
+        Page<T> page = new Page<>(cursor, limit, true);
+        return page;
+    }
+
 }

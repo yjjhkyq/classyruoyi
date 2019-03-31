@@ -2,6 +2,8 @@ package com.ruoyi.framework.web.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.ruoyi.system.domain.SysConfig;
 import com.ruoyi.system.service.ISysConfigService;
 
 /**
@@ -23,6 +25,8 @@ public class ConfigService
      */
     public String getKey(String configKey)
     {
-        return configService.selectConfigByKey(configKey);
+    	SysConfig config = new SysConfig();
+    	config.setConfigKey(configKey);
+        return configService.selectConfigBy(config).get(0).getConfigValue();
     }
 }

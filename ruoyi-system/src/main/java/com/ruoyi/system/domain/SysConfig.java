@@ -2,6 +2,10 @@ package com.ruoyi.system.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.base.BaseEntity;
 
@@ -16,6 +20,7 @@ public class SysConfig extends BaseEntity
 
     /** 参数主键 */
     @Excel(name = "参数主键")
+    @TableId
     private Long configId;
 
     /** 参数名称 */

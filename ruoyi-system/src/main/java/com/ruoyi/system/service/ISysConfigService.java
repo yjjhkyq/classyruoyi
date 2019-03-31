@@ -11,20 +11,12 @@ import com.ruoyi.system.domain.SysConfig;
 public interface ISysConfigService
 {
     /**
-     * 查询参数配置信息
+     * 精确查询参数配置信息
      * 
-     * @param configId 参数配置ID
+     * @param config 查询条件
      * @return 参数配置信息
      */
-    public SysConfig selectConfigById(Long configId);
-
-    /**
-     * 根据键名查询参数配置信息
-     * 
-     * @param configKey 参数键名
-     * @return 参数键值
-     */
-    public String selectConfigByKey(String configKey);
+    public List<SysConfig> selectConfigBy(SysConfig config);
 
     /**
      * 查询参数配置列表
@@ -64,5 +56,5 @@ public interface ISysConfigService
      * @param config 参数信息
      * @return 结果
      */
-    public String checkConfigKeyUnique(SysConfig config);
+    public boolean checkConfigKeyUnique(SysConfig config);
 }

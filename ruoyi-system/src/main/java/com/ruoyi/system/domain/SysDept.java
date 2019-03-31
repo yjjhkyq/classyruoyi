@@ -22,7 +22,7 @@ public class SysDept extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 部门ID */
-    @TableId(value = "dept_id", type = IdType.AUTO)
+    @TableId
     private Long deptId;
 
     /** 父部门ID */

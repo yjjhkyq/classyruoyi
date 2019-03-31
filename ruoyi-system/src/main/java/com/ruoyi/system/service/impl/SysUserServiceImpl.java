@@ -13,6 +13,7 @@ import com.ruoyi.common.support.Convert;
 import com.ruoyi.common.utils.Md5Utils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.ValidateUtil;
+import com.ruoyi.system.domain.SysConfig;
 import com.ruoyi.system.domain.SysPost;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUser;
@@ -383,7 +384,9 @@ public class SysUserServiceImpl implements ISysUserService
         int failureNum = 0;
         StringBuilder successMsg = new StringBuilder();
         StringBuilder failureMsg = new StringBuilder();
-        String password = configService.selectConfigByKey("sys.user.initPassword");
+        SysConfig config = new SysConfig();
+        config.setConfigKey("sys.user.initPassword");
+        String password = (configService.selectConfigBy(config)).get(0).getConfigValue();
         for (SysUser user : userList)
         {
             try

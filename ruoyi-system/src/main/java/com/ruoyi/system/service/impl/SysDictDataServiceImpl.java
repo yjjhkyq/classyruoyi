@@ -1,8 +1,11 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ruoyi.common.support.Convert;
 import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.mapper.SysDictDataMapper;
@@ -38,9 +41,9 @@ public class SysDictDataServiceImpl implements ISysDictDataService
      * @return 字典数据集合信息
      */
     @Override
-    public List<SysDictData> selectDictDataByType(String dictType)
+    public List<SysDictData> selectDictData(SysDictData dictData)
     {
-        return dictDataMapper.selectDictDataByType(dictType);
+        return dictDataMapper.selectDictData(dictData);
     }
 
     /**
@@ -53,7 +56,14 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     @Override
     public String selectDictLabel(String dictType, String dictValue)
     {
-        return dictDataMapper.selectDictLabel(dictType, dictValue);
+    	SysDictData model = new SysDictData();
+    	model.setDictType(dictType);
+    	model.setDictValue(dictValue);
+    	List<SysDictData> result = dictDataMapper.selectDictData(model);
+        if (null == result || result.size() == 0) {
+			return "";
+		}
+        return result.get(0).getDictLabel();
     }
 
     /**
@@ -65,9 +75,9 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     @Override
     public SysDictData selectDictDataById(Long dictCode)
     {
-        return dictDataMapper.selectDictDataById(dictCode);
+        return dictDataMapper.selectById(dictCode);
     }
-
+    
     /**
      * 通过字典ID删除字典数据信息
      * 
@@ -77,7 +87,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     @Override
     public int deleteDictDataById(Long dictCode)
     {
-        return dictDataMapper.deleteDictDataById(dictCode);
+        return dictDataMapper.deleteById(dictCode);
     }
 
     /**
@@ -89,7 +99,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     @Override
     public int deleteDictDataByIds(String ids)
     {
-        return dictDataMapper.deleteDictDataByIds(Convert.toStrArray(ids));
+        return dictDataMapper.deleteBatchIds(Arrays.asList(Convert.toStrArray(ids)));
     }
 
     /**
@@ -101,7 +111,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     @Override
     public int insertDictData(SysDictData dictData)
     {
-        return dictDataMapper.insertDictData(dictData);
+        return dictDataMapper.insert(dictData);
     }
 
     /**
@@ -113,6 +123,6 @@ public class SysDictDataServiceImpl implements ISysDictDataService
     @Override
     public int updateDictData(SysDictData dictData)
     {
-        return dictDataMapper.updateDictData(dictData);
+        return dictDataMapper.updateById(dictData);
     }
 }

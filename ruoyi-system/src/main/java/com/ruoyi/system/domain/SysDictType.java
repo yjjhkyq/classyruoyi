@@ -2,6 +2,10 @@ package com.ruoyi.system.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.base.BaseEntity;
 
@@ -16,6 +20,7 @@ public class SysDictType extends BaseEntity
 
     /** 字典主键 */
     @Excel(name = "字典主键")
+    @TableId
     private Long dictId;
 
     /** 字典名称 */
@@ -28,7 +33,7 @@ public class SysDictType extends BaseEntity
 
     /** 状态（0正常 1停用） */
     @Excel(name = "状态", readConverterExp = "0=正常,1=停用")
-    private String status;
+    private Integer status;
 
     public Long getDictId()
     {
@@ -60,12 +65,12 @@ public class SysDictType extends BaseEntity
         this.dictType = dictType;
     }
 
-    public String getStatus()
+    public Integer getStatus()
     {
         return status;
     }
 
-    public void setStatus(String status)
+    public void setStatus(Integer status)
     {
         this.status = status;
     }

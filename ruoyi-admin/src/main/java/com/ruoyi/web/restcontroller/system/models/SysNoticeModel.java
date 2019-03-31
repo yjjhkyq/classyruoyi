@@ -1,25 +1,16 @@
-package com.ruoyi.system.domain;
+package com.ruoyi.web.restcontroller.system.models;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import javax.validation.constraints.NotBlank;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.ruoyi.common.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
 
-/**
- * 通知公告表 sys_notice
- * 
- * @author ruoyi
- */
-public class SysNotice extends BaseEntity
-{
-    private static final long serialVersionUID = 1L;
-
-    /** 公告ID */
-    @TableId
+@ApiModel("公告")
+public class SysNoticeModel extends BaseModel{
+	 /** 公告ID */
     private Long noticeId;
     
     /** 公告标题 */
+    @NotBlank(groups = {Create.class, Update.class}, message="必填")
     private String noticeTitle;
     
     /** 公告类型（1通知 2公告） */
@@ -81,19 +72,12 @@ public class SysNotice extends BaseEntity
         return status;
     }
     
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("noticeId", getNoticeId())
-            .append("noticeTitle", getNoticeTitle())
-            .append("noticeType", getNoticeType())
-            .append("noticeContent", getNoticeContent())
-            .append("status", getStatus())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
-            .toString();
+    public interface Create {
+		
+	}
+    
+    public interface Update {
+    	
     }
+    
 }
