@@ -103,8 +103,9 @@ public class LogAspect
             operLog.setMethod(className + "." + methodName + "()");
             // 处理设置注解上的参数
             getControllerMethodDescription(controllerLog, operLog);
+            log.error("==写日志..............................==");
             // 保存数据库
-           // AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
+            AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
         }
         catch (Exception exp)
         {

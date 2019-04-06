@@ -26,6 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="remark"       column="remark"       />
 		<association property="dept"    column="dept_id" javaType="SysDept" resultMap="deptResult" />
 		<collection  property="roles"   javaType="java.util.List"        resultMap="RoleResult" />
+		<collection  property="posts"   javaType="java.util.List"        resultMap="PostResult" />
 	</resultMap>
 	
 	<resultMap id="deptResult" type="SysDept">
@@ -45,40 +46,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="status"       column="role_status"    />
 	</resultMap>
 	
+	<resultMap id="PostResult" type="SysPost">
+		<id     property="postId"       column="post_id"        />
+	</resultMap>
+	
 	<sql id="selectUserVo">
         select  u.user_id, u.dept_id, u.login_name, u.user_name, u.email, u.phonenumber, u.sex, u.avatar, u.password, u.salt, u.status, u.del_flag, u.login_ip, u.login_date, u.create_time, u.remark,
        		    d.dept_id, d.parent_id, d.dept_name, d.order_num, d.status as dept_status,
-       		    r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
+       		    r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status,
+       		    up.post_id
 		from sys_user u
 			 left join sys_dept d on u.dept_id = d.dept_id
 			 left join sys_user_role ur on u.user_id = ur.user_id
 			 left join sys_role r on r.role_id = ur.role_id
+			 left join sys_user_post up on u.user_id = up.user_id
     </sql>
 	
 	<select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
 		select u.user_id, u.dept_id, u.login_name, u.user_name, u.email, u.phonenumber, u.password, u.sex, u.avatar, u.salt, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name from sys_user u
 		left join sys_dept d on u.dept_id = d.dept_id
 		where u.del_flag = '0'
-		<if test="loginName != null and loginName != ''">
-			AND u.login_name like concat('%', #{loginName}, '%')
+		<if test="sm.loginName != null and sm.loginName != ''">
+			AND u.login_name like concat('%', #{sm.loginName}, '%')
 		</if>
-		<if test="status != null and status != ''">
-			AND u.status = #{status}
+		<if test="sm.status != null and sm.status != ''">
+			AND u.status = #{sm.status}
 		</if>
-		<if test="phonenumber != null and phonenumber != ''">
-			AND u.phonenumber like concat('%', #{phonenumber}, '%')
+		<if test="sm.phonenumber != null and sm.phonenumber != ''">
+			AND u.phonenumber like concat('%', #{sm.phonenumber}, '%')
 		</if>
-		<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-			AND date_format(u.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+		<if test="sm.params.beginTime != null and sm.params.beginTime != ''"><!-- 开始时间检索 -->
+			AND date_format(u.create_time,'%y%m%d') &gt;= date_format(#{sm.params.beginTime},'%y%m%d')
 		</if>
-		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-			AND date_format(u.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+		<if test="sm.params.endTime != null and sm.params.endTime != ''"><!-- 结束时间检索 -->
+			AND date_format(u.create_time,'%y%m%d') &lt;= date_format(#{sm.params.endTime},'%y%m%d')
 		</if>
-		<if test="deptId != null and deptId != 0">
-			AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET (#{deptId},ancestors) ))
+		<if test="sm.deptId != null and sm.deptId != 0">
+			AND (u.dept_id = #{sm.deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE FIND_IN_SET (#{sm.deptId},ancestors) ))
 		</if>
 		<!-- 数据范围过滤 -->
-		${params.dataScope}
+		${sm.params.dataScope}
 	</select>
 	
 	<select id="selectUserByLoginName" parameterType="String" resultMap="SysUserResult">
@@ -112,70 +119,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectUserVo"/>
 		where u.user_id = #{userId}
 	</select>
-	
-	<delete id="deleteUserById" parameterType="Long">
- 		delete from sys_user where user_id = #{userId}
- 	</delete>
- 	
- 	<delete id="deleteUserByIds" parameterType="Long">
- 		update sys_user set del_flag = '2' where user_id in
- 		<foreach collection="array" item="userId" open="(" separator="," close=")">
- 			#{userId}
-        </foreach> 
- 	</delete>
- 	
- 	<update id="updateUser" parameterType="SysUser">
- 		update sys_user
- 		<set>
- 			<if test="deptId != null and deptId != 0">dept_id = #{deptId},</if>
- 			<if test="loginName != null and loginName != ''">login_name = #{loginName},</if>
- 			<if test="userName != null and userName != ''">user_name = #{userName},</if>
- 			<if test="email != null and email != ''">email = #{email},</if>
- 			<if test="phonenumber != null and phonenumber != ''">phonenumber = #{phonenumber},</if>
- 			<if test="sex != null and sex != ''">sex = #{sex},</if>
- 			<if test="avatar != null and avatar != ''">avatar = #{avatar},</if>
- 			<if test="password != null and password != ''">password = #{password},</if>
- 			<if test="salt != null and salt != ''">salt = #{salt},</if>
- 			<if test="status != null and status != ''">status = #{status},</if>
- 			<if test="loginIp != null and loginIp != ''">login_ip = #{loginIp},</if>
- 			<if test="loginDate != null">login_date = #{loginDate},</if>
- 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
- 			<if test="remark != null and remark != ''">remark = #{remark},</if>
- 			update_time = sysdate()
- 		</set>
- 		where user_id = #{userId}
-	</update>
- 	
- 	<insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
- 		insert into sys_user(
- 			<if test="userId != null and userId != 0">user_id,</if>
- 			<if test="deptId != null and deptId != 0">dept_id,</if>
- 			<if test="loginName != null and loginName != ''">login_name,</if>
- 			<if test="userName != null and userName != ''">user_name,</if>
- 			<if test="email != null and email != ''">email,</if>
- 			<if test="phonenumber != null and phonenumber != ''">phonenumber,</if>
- 			<if test="sex != null and sex != ''">sex,</if>
- 			<if test="password != null and password != ''">password,</if>
- 			<if test="salt != null and salt != ''">salt,</if>
- 			<if test="status != null and status != ''">status,</if>
- 			<if test="createBy != null and createBy != ''">create_by,</if>
- 			<if test="remark != null and remark != ''">remark,</if>
- 			create_time
- 		)values(
- 			<if test="userId != null and userId != ''">#{userId},</if>
- 			<if test="deptId != null and deptId != ''">#{deptId},</if>
- 			<if test="loginName != null and loginName != ''">#{loginName},</if>
- 			<if test="userName != null and userName != ''">#{userName},</if>
- 			<if test="email != null and email != ''">#{email},</if>
- 			<if test="phonenumber != null and phonenumber != ''">#{phonenumber},</if>
- 			<if test="sex != null and sex != ''">#{sex},</if>
- 			<if test="password != null and password != ''">#{password},</if>
- 			<if test="salt != null and salt != ''">#{salt},</if>
- 			<if test="status != null and status != ''">#{status},</if>
- 			<if test="createBy != null and createBy != ''">#{createBy},</if>
- 			<if test="remark != null and remark != ''">#{remark},</if>
- 			sysdate()
- 		)
-	</insert>
-	
-</mapper> 
+	</mapper>

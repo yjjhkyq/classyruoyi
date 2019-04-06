@@ -43,6 +43,16 @@ public class SysPostController extends BaseController
     {
     	return success(postService.selectPostList(getPage(), post));
     }
+    
+    @ApiOperation("岗位搜索")
+    @RequiresPermissions("system:post:list")
+    @PostMapping("/listAll")
+    @ResponseBody
+    public AjaxResult listAll(@RequestBody SysPost post)
+    {
+    	return success(postService.selectPostList(getAllPage(), post));
+    }
+
 
     @ApiOperation("岗位精确查询")
     @RequiresPermissions("system:post:delete")

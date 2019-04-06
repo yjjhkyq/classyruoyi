@@ -70,7 +70,7 @@ public class SysDeptController extends BaseController
     * 部门精确查询
     */
    @ApiOperation("部门精确查询")
-   @RequiresPermissions("system:dept:getby")
+   @RequiresPermissions("system:dept:list")
    @PostMapping("/getby")
    public AjaxResult getby(@RequestBody @Validated SysDept dept)
    {

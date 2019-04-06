@@ -1,8 +1,13 @@
 package com.ruoyi.system.service;
 
+import java.awt.Menu;
 import java.util.List;
 import java.util.Set;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.system.domain.SysRole;
+import com.ruoyi.system.domain.SysRoleMenu;
 
 /**
  * 角色业务层
@@ -17,7 +22,7 @@ public interface ISysRoleService
      * @param role 角色信息
      * @return 角色数据集合信息
      */
-    public List<SysRole> selectRoleList(SysRole role);
+    public IPage<SysRole> selectRoleList(IPage<SysRole> page, SysRole role);
 
     /**
      * 根据用户ID查询角色
@@ -65,7 +70,7 @@ public interface ISysRoleService
      * @return 结果
      * @throws Exception 异常
      */
-    public int deleteRoleByIds(String ids) throws Exception;
+    public int deleteRoleByIds(String ids);
 
     /**
      * 新增保存角色信息
@@ -97,7 +102,7 @@ public interface ISysRoleService
      * @param role 角色信息
      * @return 结果
      */
-    public String checkRoleNameUnique(SysRole role);
+    public boolean checkRoleNameUnique(SysRole role);
 
     /**
      * 校验角色权限是否唯一
@@ -105,7 +110,7 @@ public interface ISysRoleService
      * @param role 角色信息
      * @return 结果
      */
-    public String checkRoleKeyUnique(SysRole role);
+    public boolean checkRoleKeyUnique(SysRole role);
 
     /**
      * 通过角色ID查询角色使用数量
@@ -122,4 +127,19 @@ public interface ISysRoleService
      * @return 结果
      */
     public int changeStatus(SysRole role);
+    
+    /**
+     * 查询角色拥有的菜单信息
+     * @param roleMenu
+     * @return
+     */
+    public List<SysMenu> selectMenuBy(Long roleId);
+    
+    /**
+     *给角色设置菜单权限 
+     *@param roleId 角色id
+     *@param menus 菜单
+     *@return
+     */
+    public int setRoleMenu(Long roleId, List<SysMenu> menus);
 }

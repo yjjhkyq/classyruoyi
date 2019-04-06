@@ -58,7 +58,7 @@ public class SysDictDataController extends BaseController
      * 字典类型精确查询
      */
     @ApiOperation("字典精确查询")
-    @RequiresPermissions("system:dict:getby")
+    @RequiresPermissions("system:dict:list")
     @PostMapping("/getby")
     @ResponseBody
     public AjaxResult getby(@RequestBody SysDictData model)

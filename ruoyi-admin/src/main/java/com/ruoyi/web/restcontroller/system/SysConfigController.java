@@ -49,7 +49,7 @@ public class SysConfigController extends BaseController{
     /**
      * 新增保存参数配置
      */
-    @RequiresPermissions("system:config:add")
+    @RequiresPermissions("system:config:create")
     @Log(title = "参数管理", businessType = BusinessType.INSERT)
     @PostMapping("/create")
     public AjaxResult create(@RequestBody @Validated(SysConfigModel.Create.class) SysConfigModel model)
@@ -77,7 +77,7 @@ public class SysConfigController extends BaseController{
      * 参数配置精确查询
      */
     @ApiOperation("字典类型精确查询")
-    @RequiresPermissions("system:config:getby")
+    @RequiresPermissions("system:config:list")
     @PostMapping("/getby")
     @ResponseBody
     public AjaxResult getby(@RequestBody SysConfigModel model)

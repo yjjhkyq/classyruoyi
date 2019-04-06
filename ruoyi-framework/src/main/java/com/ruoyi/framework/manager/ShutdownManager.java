@@ -3,6 +3,7 @@ package com.ruoyi.framework.manager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import javax.annotation.PreDestroy;
 
@@ -15,10 +16,7 @@ import javax.annotation.PreDestroy;
 public class ShutdownManager
 {
     private static final Logger logger = LoggerFactory.getLogger("sys-user");
-
-    @Autowired(required = false)
-  
-
+    
     @PreDestroy
     public void destroy()
     {

@@ -2,6 +2,8 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ruoyi.system.domain.SysMenu;
 
 /**
@@ -9,7 +11,7 @@ import com.ruoyi.system.domain.SysMenu;
  * 
  * @author ruoyi
  */
-public interface SysMenuMapper
+public interface SysMenuMapper extends BaseMapper<SysMenu>
 {
     /**
      * 查询系统所有菜单（含按钮）
@@ -58,44 +60,12 @@ public interface SysMenuMapper
     public List<SysMenu> selectMenuList(SysMenu menu);
 
     /**
-     * 删除菜单管理信息
-     * 
-     * @param menuId 菜单ID
-     * @return 结果
-     */
-    public int deleteMenuById(Long menuId);
-
-    /**
-     * 根据菜单ID查询信息
-     * 
-     * @param menuId 菜单ID
-     * @return 菜单信息
-     */
-    public SysMenu selectMenuById(Long menuId);
-
-    /**
      * 查询菜单数量
      * 
      * @param parentId 菜单父ID
      * @return 结果
      */
     public int selectCountMenuByParentId(Long parentId);
-
-    /**
-     * 新增菜单信息
-     * 
-     * @param menu 菜单信息
-     * @return 结果
-     */
-    public int insertMenu(SysMenu menu);
-
-    /**
-     * 修改菜单信息
-     * 
-     * @param menu 菜单信息
-     * @return 结果
-     */
-    public int updateMenu(SysMenu menu);
 
     /**
      * 校验菜单名称是否唯一

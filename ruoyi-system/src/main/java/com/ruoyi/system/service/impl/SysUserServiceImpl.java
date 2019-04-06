@@ -1,13 +1,16 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ruoyi.common.annotation.DataScope;
-import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.exception.BusinessException;
 import com.ruoyi.common.support.Convert;
 import com.ruoyi.common.utils.Md5Utils;
@@ -64,9 +67,9 @@ public class SysUserServiceImpl implements ISysUserService
      */
     @Override
     @DataScope(tableAlias = "u")
-    public List<SysUser> selectUserList(SysUser user)
+    public IPage<SysUser> selectUserList(IPage<SysUser> page, SysUser user)
     {
-        return userMapper.selectUserList(user);
+        return userMapper.selectUserList(page, user);
     }
 
     /**
@@ -130,7 +133,7 @@ public class SysUserServiceImpl implements ISysUserService
         userRoleMapper.deleteUserRoleByUserId(userId);
         // 删除用户与岗位表
         userPostMapper.deleteUserPostByUserId(userId);
-        return userMapper.deleteUserById(userId);
+        return userMapper.deleteById(userId);
     }
 
     /**
@@ -150,7 +153,7 @@ public class SysUserServiceImpl implements ISysUserService
                 throw new BusinessException("不允许删除超级管理员用户");
             }
         }
-        return userMapper.deleteUserByIds(userIds);
+        return userMapper.deleteBatchIds(Arrays.asList(userIds));
     }
 
     /**
@@ -163,7 +166,7 @@ public class SysUserServiceImpl implements ISysUserService
     public int insertUser(SysUser user)
     {
         // 新增用户信息
-        int rows = userMapper.insertUser(user);
+        int rows = userMapper.insert(user);
         // 新增用户岗位关联
         insertUserPost(user);
         // 新增用户与角色管理
@@ -189,7 +192,7 @@ public class SysUserServiceImpl implements ISysUserService
         userPostMapper.deleteUserPostByUserId(userId);
         // 新增用户与岗位管理
         insertUserPost(user);
-        return userMapper.updateUser(user);
+        return userMapper.updateById(user);
     }
 
     /**
@@ -201,7 +204,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public int updateUserInfo(SysUser user)
     {
-        return userMapper.updateUser(user);
+        return userMapper.updateById(user);
     }
 
     /**
@@ -213,7 +216,10 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public int resetUserPwd(SysUser user)
     {
-        return updateUserInfo(user);
+    	SysUser existedEntity = userMapper.selectById(user.getUserId());
+    	existedEntity.setSalt(user.getSalt());
+    	existedEntity.setPassword(user.getPassword());
+        return updateUserInfo(existedEntity);
     }
 
     /**
@@ -275,14 +281,14 @@ public class SysUserServiceImpl implements ISysUserService
      * @return
      */
     @Override
-    public String checkLoginNameUnique(String loginName)
+    public boolean checkLoginNameUnique(String loginName)
     {
         int count = userMapper.checkLoginNameUnique(loginName);
         if (count > 0)
         {
-            return UserConstants.USER_NAME_NOT_UNIQUE;
+            return false;
         }
-        return UserConstants.USER_NAME_UNIQUE;
+        return true;
     }
 
     /**
@@ -292,15 +298,15 @@ public class SysUserServiceImpl implements ISysUserService
      * @return
      */
     @Override
-    public String checkPhoneUnique(SysUser user)
+    public boolean checkPhoneUnique(SysUser user)
     {
         Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
         SysUser info = userMapper.checkPhoneUnique(user.getPhonenumber());
         if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue())
         {
-            return UserConstants.USER_PHONE_NOT_UNIQUE;
+            return false;
         }
-        return UserConstants.USER_PHONE_UNIQUE;
+        return true;
     }
 
     /**
@@ -310,15 +316,15 @@ public class SysUserServiceImpl implements ISysUserService
      * @return
      */
     @Override
-    public String checkEmailUnique(SysUser user)
+    public boolean checkEmailUnique(SysUser user)
     {
         Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
         SysUser info = userMapper.checkEmailUnique(user.getEmail());
         if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue())
         {
-            return UserConstants.USER_EMAIL_NOT_UNIQUE;
+            return false;
         }
-        return UserConstants.USER_EMAIL_UNIQUE;
+        return true;
     }
 
     /**
@@ -447,7 +453,7 @@ public class SysUserServiceImpl implements ISysUserService
         {
             throw new BusinessException("不允许修改超级管理员用户");
         }
-        return userMapper.updateUser(user);
+        return userMapper.updateById(user);
     }
 
 	@Override

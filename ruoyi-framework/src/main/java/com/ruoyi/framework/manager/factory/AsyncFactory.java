@@ -40,9 +40,14 @@ public class AsyncFactory
             @Override
             public void run()
             {
+            	try {
                 // 远程查询操作地点
-                operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
+                //operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
                 SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
+            	}
+            	catch (Exception e) {
+            		sys_user_logger.error("写日志失败:" + e.getMessage());
+				}
             }
         };
     }

@@ -22,10 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<sql id="selectRoleContactVo">
         select distinct r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope,
             r.status, r.del_flag, r.create_time, r.remark 
-        from sys_role r
-	        left join sys_user_role ur on ur.role_id = r.role_id
-	        left join sys_user u on u.user_id = ur.user_id
-	        left join sys_dept d on u.dept_id = d.dept_id
+        from sys_role r left join sys_user_role ur on r.role_id = ur.role_id 
     </sql>
     
     <sql id="selectRoleVo">
@@ -33,41 +30,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from sys_role r
 	</sql>
 	
+	<select id="selectRolesByUserId" parameterType="Long" resultMap="SysRoleResult">
+	  <include refid="selectRoleContactVo"/>
+	  where r.del_flag = '0' and ur.user_id = #{userId}
+	</select>
+	
 	<select id="selectRoleList" parameterType="SysRole" resultMap="SysRoleResult">
 		<include refid="selectRoleContactVo"/>
 		where r.del_flag = '0'
-		<if test="roleName != null and roleName != ''">
-			AND r.role_name like concat('%', #{roleName}, '%')
+		<if test="sm.roleName != null and sm.roleName != ''">
+			AND r.role_name like concat('%', #{sm.roleName}, '%')
 		</if>
-		<if test="status != null and status != ''">
-			AND r.status = #{status}
+		<if test="sm.status != null and sm.status != ''">
+			AND r.status = #{sm.status}
 		</if>
-		<if test="roleKey != null and roleKey != ''">
-			AND r.role_key like concat('%', #{roleKey}, '%')
+		<if test="sm.roleKey != null and sm.roleKey != ''">
+			AND r.role_key like concat('%', #{sm.roleKey}, '%')
 		</if>
-		<if test="dataScope != null and dataScope != ''">
-			AND r.data_scope = #{dataScope}
+		<if test="sm.dataScope != null and sm.dataScope != ''">
+			AND r.data_scope = #{sm.dataScope}
 		</if>
-		<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-			and date_format(r.create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+		<if test="sm.params.beginTime != null and sm.params.beginTime != ''"><!-- 开始时间检索 -->
+			and date_format(r.create_time,'%y%m%d') &gt;= date_format(#{sm.params.beginTime},'%y%m%d')
 		</if>
-		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-			and date_format(r.create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+		<if test="sm.params.endTime != null and sm.params.endTime != ''"><!-- 结束时间检索 -->
+			and date_format(r.create_time,'%y%m%d') &lt;= date_format(#{sm.params.endTime},'%y%m%d')
 		</if>
 		<!-- 数据范围过滤 -->
-		${params.dataScope}
+		${sm.params.dataScope}
 	</select>
 
-	<select id="selectRolesByUserId" parameterType="Long" resultMap="SysRoleResult">
-		<include refid="selectRoleContactVo"/>
-		WHERE r.del_flag = '0' and ur.user_id = #{userId}
-	</select>
-	
-	<select id="selectRoleById" parameterType="Long" resultMap="SysRoleResult">
-		<include refid="selectRoleVo"/>
-		where r.del_flag = '0' and r.role_id = #{roleId}
-	</select>
-	
 	<select id="checkRoleNameUnique" parameterType="String" resultMap="SysRoleResult">
 		<include refid="selectRoleVo"/>
 		 where r.role_name=#{roleName}
@@ -77,7 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="selectRoleVo"/>
 		 where r.role_key=#{roleKey}
 	</select>
-	
+	<!-- 
 	<delete id="deleteRoleById" parameterType="Long">
  		delete from sys_role where role_id = #{roleId}
  	</delete>
@@ -127,5 +119,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			sysdate()
  		)
 	</insert>
-	
+	 -->
 </mapper> 

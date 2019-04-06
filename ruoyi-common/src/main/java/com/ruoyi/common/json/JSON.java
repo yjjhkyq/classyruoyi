@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -61,24 +62,15 @@ public class JSON
         }
     }
 
-    public static String marshal(Object value) throws Exception
+    public static String marshal(Object value)
     {
-        try
-        {
-            return objectWriter.writeValueAsString(value);
-        }
-        catch (JsonGenerationException e)
-        {
-            throw new Exception(e);
-        }
-        catch (JsonMappingException e)
-        {
-            throw new Exception(e);
-        }
-        catch (IOException e)
-        {
-            throw new Exception(e);
-        }
+	    try {
+			return objectWriter.writeValueAsString(value);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    return null;
     }
 
     public static byte[] marshalBytes(Object value) throws Exception

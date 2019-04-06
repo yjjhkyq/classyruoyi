@@ -21,6 +21,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.ObjectUtils;
 
 import com.ruoyi.common.constant.ShiroConstants;
+import com.ruoyi.common.json.JSON;
 import com.ruoyi.framework.shiro.token.JwtToken;
 import com.ruoyi.framework.shiro.web.filter.BJwtFilter;
 import com.ruoyi.framework.util.JsonWebTokenUtil;
@@ -89,7 +90,7 @@ public class JwtRealm extends AuthorizingRealm {
             // 权限加入AuthorizationInfo认证对象
             info.setStringPermissions(menus);
         }
-        logger.debug("info............" + info.toString());
+        logger.debug("SimpleAuthorizationInfo: " + JSON.marshal(info));
         return info;
     	}
     	catch(Exception e) 

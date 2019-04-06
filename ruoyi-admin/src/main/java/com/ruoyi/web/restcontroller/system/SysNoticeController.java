@@ -73,7 +73,7 @@ public class SysNoticeController extends BaseController {
      * 公告精确查询
      */
     @ApiOperation("公告精确查询")
-    @RequiresPermissions("system:notice:getby")
+    @RequiresPermissions("system:notice:list")
     @PostMapping("/getby")
     public AjaxResult getby(@RequestBody SysNoticeModel model)
     {

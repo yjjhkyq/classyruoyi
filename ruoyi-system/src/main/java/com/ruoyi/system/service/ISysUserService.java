@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ruoyi.system.domain.SysUser;
 
 /**
@@ -16,7 +18,7 @@ public interface ISysUserService
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    public List<SysUser> selectUserList(SysUser user);
+    public IPage<SysUser> selectUserList(IPage<SysUser> page, SysUser user);
 
     /**
      * 根据账号名查询用户
@@ -71,7 +73,7 @@ public interface ISysUserService
      * @return 结果
      * @throws Exception 异常
      */
-    public int deleteUserByIds(String ids) throws Exception;
+    public int deleteUserByIds(String ids);
 
     /**
      * 保存用户信息
@@ -111,7 +113,7 @@ public interface ISysUserService
      * @param loginName 登录名称
      * @return 结果
      */
-    public String checkLoginNameUnique(String loginName);
+    public boolean checkLoginNameUnique(String loginName);
 
     /**
      * 校验手机号码是否唯一
@@ -119,7 +121,7 @@ public interface ISysUserService
      * @param user 用户信息
      * @return 结果
      */
-    public String checkPhoneUnique(SysUser user);
+    public boolean checkPhoneUnique(SysUser user);
 
     /**
      * 校验email是否唯一
@@ -127,7 +129,7 @@ public interface ISysUserService
      * @param user 用户信息
      * @return 结果
      */
-    public String checkEmailUnique(SysUser user);
+    public boolean checkEmailUnique(SysUser user);
 
     /**
      * 根据用户ID查询用户所属角色组

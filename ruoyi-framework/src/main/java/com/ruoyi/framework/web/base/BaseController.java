@@ -162,11 +162,6 @@ public class BaseController
         return ShiroUtils.getSysUser();
     }
 
-    public void setSysUser(SysUser user)
-    {
-        ShiroUtils.setSysUser(user);
-    }
-
     public Long getUserId()
     {
         return getSysUser().getUserId();
@@ -183,23 +178,35 @@ public class BaseController
      * @return
      */
     protected <T> Page<T> getPage() {
-        return getPage(false);
+        return getPage(false, true);
+    }
+    
+    /**
+     * 获取所有数据
+     * @return
+     */
+    protected <T> Page<T> getAllPage() {
+        return getPage(false, false);
     }
 
     /**
      * 获取分页对象
      *
      * @param openSort
+     * @param page true 分页，false 不分页
      * @return
      */
-    protected <T> Page<T> getPage(boolean openSort) {
+    protected <T> Page<T> getPage(boolean openSort, boolean pageable) {
         int index = 1;
         // 页数
         Integer cursor = ServletUtils.getParameterToInt(PageCons.PAGE_PAGE, index);
         // 分页大小
         Integer limit = ServletUtils.getParameterToInt(PageCons.PAGE_ROWS, PageCons.DEFAULT_LIMIT);
         limit = limit > PageCons.MAX_LIMIT ? PageCons.MAX_LIMIT : limit;
-        Page<T> page = new Page<>(cursor, limit, true);
+        if (!pageable) {
+			limit = Integer.MAX_VALUE;
+		}
+        Page<T> page = new Page<>(cursor, limit, pageable);
         return page;
     }
 
