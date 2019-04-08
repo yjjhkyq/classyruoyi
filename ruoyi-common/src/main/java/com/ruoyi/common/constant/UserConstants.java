@@ -7,6 +7,15 @@ package com.ruoyi.common.constant;
  */
 public class UserConstants
 {
+	/**
+	 *超级管理员用户id
+	 */
+	public static final Long AdminUserId = 1L;
+	/**
+	 * 后台任务账户，后台任务都用此账户
+	 */
+	public static final String BackgroundTaskAccount = "BackgroundTaskAccount";
+	
     /** 正常状态 */
     public static final String NORMAL = "0";
 

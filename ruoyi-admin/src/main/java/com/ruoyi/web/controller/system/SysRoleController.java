@@ -1,4 +1,4 @@
-package com.ruoyi.web.restcontroller.system;
+package com.ruoyi.web.controller.system;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.service.ISysRoleService;
-import com.ruoyi.web.restcontroller.system.models.SysRoleModel;
+import com.ruoyi.web.controller.system.models.SysRoleModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

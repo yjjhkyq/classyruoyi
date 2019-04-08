@@ -12,6 +12,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.constant.ScheduleConstants;
+import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
@@ -45,7 +46,7 @@ public class ScheduleJob extends QuartzJobBean
         jobLog.setJobGroup(job.getJobGroup());
         jobLog.setMethodName(job.getMethodName());
         jobLog.setMethodParams(job.getMethodParams());
-        jobLog.setCreateTime(LocalDateTime.now());
+        jobLog.setCreateTime(new Date());
 
         long startTime = System.currentTimeMillis();
 
@@ -75,6 +76,8 @@ public class ScheduleJob extends QuartzJobBean
         }
         finally
         {
+        	jobLog.setCreateBy(UserConstants.BackgroundTaskAccount);
+        	jobLog.setUpdateBy(UserConstants.BackgroundTaskAccount);
             jobLogService.addJobLog(jobLog);
         }
     }

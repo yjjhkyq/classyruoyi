@@ -1,4 +1,4 @@
-package com.ruoyi.web.restcontroller.system;
+package com.ruoyi.web.controller.system;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import com.ruoyi.framework.web.domain.server.Sys;
 import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.service.ISysMenuService;
-import com.ruoyi.web.restcontroller.system.models.SysMenuModel;
+import com.ruoyi.web.controller.system.models.SysMenuModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

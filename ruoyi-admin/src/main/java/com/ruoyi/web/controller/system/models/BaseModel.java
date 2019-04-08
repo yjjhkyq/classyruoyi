@@ -1,6 +1,7 @@
-package com.ruoyi.web.restcontroller.system.models;
+package com.ruoyi.web.controller.system.models;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
@@ -19,7 +20,7 @@ public class BaseModel {
     /** 创建时间 */
     //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty("创建时间")
-    private LocalDateTime createTime;
+    private Date createTime;
 
     /** 更新者 */
     @ApiModelProperty("更新者")
@@ -27,7 +28,7 @@ public class BaseModel {
 
     /** 更新时间 */
     @ApiModelProperty("更新时间")
-    private LocalDateTime updateTime;
+    private Date updateTime;
     
     /** 备注 */
     @ApiModelProperty("备注")

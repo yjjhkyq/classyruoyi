@@ -212,6 +212,11 @@ public class ApiAssert {
         }
     }
 
+    public static void isTrue(String info, boolean condition) {
+        if (!condition) {
+            failure(info);
+        }
+    }
     public static void isFalse(ErrorCode errorCode, boolean condition) {
         if (condition) {
             failure(errorCode);
@@ -241,6 +246,17 @@ public class ApiAssert {
     	throw new BusinessException(errorCode);
     }
 
+    /**
+     * <p>
+     * 失败结果
+     * </p>
+     *
+     * @param errorCode 异常错误码
+     */
+    public static void failure(String info) {
+    	throw new BusinessException(info);
+    }
+    
     public static void notEmpty(ErrorCode errorCode, Object[] array) {
         if (ObjectUtils.isEmpty(array)) {
             failure(errorCode);

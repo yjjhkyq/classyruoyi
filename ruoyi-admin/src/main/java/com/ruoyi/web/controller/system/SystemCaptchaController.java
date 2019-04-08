@@ -1,4 +1,4 @@
-package com.ruoyi.web.restcontroller.system;
+package com.ruoyi.web.controller.system;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

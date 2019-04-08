@@ -1,4 +1,4 @@
-package com.ruoyi.web.restcontroller.system.models;
+package com.ruoyi.web.controller.system.models;
 
 import java.util.Date;
 import java.util.List;

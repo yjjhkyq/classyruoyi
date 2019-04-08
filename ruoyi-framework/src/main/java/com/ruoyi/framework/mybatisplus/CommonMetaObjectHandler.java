@@ -1,10 +1,13 @@
 package com.ruoyi.framework.mybatisplus;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.apache.ibatis.reflection.MetaObject;
 
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.ruoyi.common.support.Convert;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 
@@ -35,16 +38,26 @@ public class CommonMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        setInsertFieldValByName(createTime, LocalDateTime.now(), metaObject);
-        setInsertFieldValByName(createUid, currentUid(), metaObject);
-        setInsertFieldValByName(updateTime, LocalDateTime.now(), metaObject);
-        setInsertFieldValByName(updateUid, currentUid(), metaObject);
+        setInsertFieldValByName(createTime, new Date(), metaObject);
+        String uid = Convert.toStr(getFieldValByName(createUid, metaObject));
+        if(StringUtils.isEmpty(uid)) {
+        	setInsertFieldValByName(createUid, currentUid(), metaObject);
+        }
+        setInsertFieldValByName(updateTime, new Date(), metaObject);
+        uid = Convert.toStr(getFieldValByName(updateUid, metaObject));
+        if(StringUtils.isEmpty(uid)) {
+        	setInsertFieldValByName(updateUid, currentUid(), metaObject);
+        }
+        
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        setUpdateFieldValByName(updateTime, LocalDateTime.now(), metaObject);
-        setUpdateFieldValByName(updateUid, currentUid(), metaObject);
+        setUpdateFieldValByName(updateTime, new Date(), metaObject);
+        String uid = Convert.toStr(getFieldValByName(updateUid, metaObject));
+        if(StringUtils.isEmpty(uid)) {
+        	setInsertFieldValByName(updateUid, currentUid(), metaObject);
+        }
     }
 
     /**

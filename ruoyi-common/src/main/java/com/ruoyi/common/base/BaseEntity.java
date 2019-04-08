@@ -29,7 +29,7 @@ public class BaseEntity implements Serializable
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private Date createTime;
 
     /** 更新者 */
     @TableField(fill = FieldFill.INSERT_UPDATE)
@@ -38,7 +38,7 @@ public class BaseEntity implements Serializable
     /** 更新时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
+    private Date updateTime;
     
     /** 备注 */
     private String remark;
@@ -67,12 +67,12 @@ public class BaseEntity implements Serializable
         this.createBy = createBy;
     }
 
-    public LocalDateTime getCreateTime()
+    public Date getCreateTime()
     {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime)
+    public void setCreateTime(Date createTime)
     {
         this.createTime = createTime;
     }
@@ -87,12 +87,12 @@ public class BaseEntity implements Serializable
         this.updateBy = updateBy;
     }
 
-    public LocalDateTime getUpdateTime()
+    public Date getUpdateTime()
     {
         return updateTime;
     }
 
-    public void setUpdateTime(LocalDateTime updateTime)
+    public void setUpdateTime(Date updateTime)
     {
         this.updateTime = updateTime;
     }

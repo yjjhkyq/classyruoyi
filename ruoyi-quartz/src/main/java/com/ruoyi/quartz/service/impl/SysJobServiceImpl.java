@@ -1,11 +1,15 @@
 package com.ruoyi.quartz.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.constant.ScheduleConstants;
 import com.ruoyi.common.support.Convert;
 import com.ruoyi.quartz.domain.SysJob;
@@ -34,20 +38,24 @@ public class SysJobServiceImpl implements ISysJobService
     @PostConstruct
     public void init()
     {
-//        List<SysJob> jobList = jobMapper.selectJobAll();
-//        for (SysJob job : jobList)
-//        {
-//            CronTrigger cronTrigger = ScheduleUtils.getCronTrigger(scheduler, job.getJobId());
-//            // 如果不存在，则创建
-//            if (cronTrigger == null)
-//            {
-//                ScheduleUtils.createScheduleJob(scheduler, job);
-//            }
-//            else
-//            {
-//                ScheduleUtils.updateScheduleJob(scheduler, job);
-//            }
-//        }
+    	IPage<SysJob> jobs = jobMapper.selectJobList(new Page<>(1, Integer.MAX_VALUE), new SysJob());
+        List<SysJob> jobList = jobs.getRecords();
+        if (jobList == null) {
+			jobList = new ArrayList<>();
+		}
+        for (SysJob job : jobList)
+        {
+            CronTrigger cronTrigger = ScheduleUtils.getCronTrigger(scheduler, job.getJobId());
+            // 如果不存在，则创建
+            if (cronTrigger == null)
+            {
+                ScheduleUtils.createScheduleJob(scheduler, job);
+            }
+            else
+            {
+                ScheduleUtils.updateScheduleJob(scheduler, job);
+            }
+        }
     }
 
     /**
@@ -57,9 +65,9 @@ public class SysJobServiceImpl implements ISysJobService
      * @return
      */
     @Override
-    public List<SysJob> selectJobList(SysJob job)
+    public IPage<SysJob> selectJobList(IPage<SysJob> page, SysJob job)
     {
-        return jobMapper.selectJobList(job);
+        return jobMapper.selectJobList(page, job);
     }
 
     /**
@@ -71,7 +79,7 @@ public class SysJobServiceImpl implements ISysJobService
     @Override
     public SysJob selectJobById(Long jobId)
     {
-        return jobMapper.selectJobById(jobId);
+        return jobMapper.selectById(jobId);
     }
 
     /**
@@ -83,7 +91,7 @@ public class SysJobServiceImpl implements ISysJobService
     public int pauseJob(SysJob job)
     {
         job.setStatus(ScheduleConstants.Status.PAUSE.getValue());
-        int rows = jobMapper.updateJob(job);
+        int rows = jobMapper.updateById(job);
         if (rows > 0)
         {
             ScheduleUtils.pauseJob(scheduler, job.getJobId());
@@ -100,7 +108,7 @@ public class SysJobServiceImpl implements ISysJobService
     public int resumeJob(SysJob job)
     {
         job.setStatus(ScheduleConstants.Status.NORMAL.getValue());
-        int rows = jobMapper.updateJob(job);
+        int rows = jobMapper.updateById(job);
         if (rows > 0)
         {
             ScheduleUtils.resumeJob(scheduler, job.getJobId());
@@ -116,7 +124,7 @@ public class SysJobServiceImpl implements ISysJobService
     @Override
     public int deleteJob(SysJob job)
     {
-        int rows = jobMapper.deleteJobById(job.getJobId());
+        int rows = jobMapper.deleteById(job.getJobId());
         if (rows > 0)
         {
             ScheduleUtils.deleteScheduleJob(scheduler, job.getJobId());
@@ -136,7 +144,7 @@ public class SysJobServiceImpl implements ISysJobService
         Long[] jobIds = Convert.toLongArray(ids);
         for (Long jobId : jobIds)
         {
-            SysJob job = jobMapper.selectJobById(jobId);
+            SysJob job = jobMapper.selectById(jobId);
             deleteJob(job);
         }
     }
@@ -182,7 +190,7 @@ public class SysJobServiceImpl implements ISysJobService
     public int insertJobCron(SysJob job)
     {
         job.setStatus(ScheduleConstants.Status.PAUSE.getValue());
-        int rows = jobMapper.insertJob(job);
+        int rows = jobMapper.insert(job);
         if (rows > 0)
         {
             ScheduleUtils.createScheduleJob(scheduler, job);
@@ -198,7 +206,7 @@ public class SysJobServiceImpl implements ISysJobService
     @Override
     public int updateJobCron(SysJob job)
     {
-        int rows = jobMapper.updateJob(job);
+        int rows = jobMapper.updateById(job);
         if (rows > 0)
         {
             ScheduleUtils.updateScheduleJob(scheduler, job);

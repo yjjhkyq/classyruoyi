@@ -1,9 +1,9 @@
-package com.ruoyi.web.restcontroller.system.models;
+package com.ruoyi.web.controller.system.models;
 
 import javax.validation.constraints.NotBlank;
 
-import com.ruoyi.web.restcontroller.system.models.SysDictTypeModel.Create;
-import com.ruoyi.web.restcontroller.system.models.SysDictTypeModel.Update;
+import com.ruoyi.web.controller.system.models.SysDictTypeModel.Create;
+import com.ruoyi.web.controller.system.models.SysDictTypeModel.Update;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

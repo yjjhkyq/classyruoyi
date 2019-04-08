@@ -28,81 +28,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectJobList" parameterType="SysJob" resultMap="SysJobResult">
 		<include refid="selectJobVo"/>
 		<where>
-			<if test="jobName != null and jobName != ''">
-				AND job_name like concat('%', #{jobName}, '%')
+			<if test="sm.jobName != null and sm.jobName != ''">
+				AND job_name like concat('%', #{sm.jobName}, '%')
 			</if>
-			<if test="status != null and status != ''">
-				AND status = #{status}
+			<if test="sm.status != null and sm.status != ''">
+				AND status = #{sm.status}
 			</if>
-			<if test="methodName != null and methodName != ''">
-				AND method_name like concat('%', #{methodName}, '%')
+			<if test="sm.methodName != null and sm.methodName != ''">
+				AND method_name like concat('%', #{sm.methodName}, '%')
 			</if>
 		</where>
 	</select>
-	
-	<select id="selectJobAll" resultMap="SysJobResult">
-		<include refid="selectJobVo"/>
-	</select>
-	
-	<select id="selectJobById" parameterType="Long" resultMap="SysJobResult">
-		<include refid="selectJobVo"/>
-		where job_id = #{jobId}
-	</select>
-	
-	<delete id="deleteJobById" parameterType="Long">
- 		delete from sys_job where job_id = #{jobId}
- 	</delete>
- 	
- 	<delete id="deleteJobByIds" parameterType="Long">
- 		delete from sys_job where job_id in
- 		<foreach collection="array" item="jobId" open="(" separator="," close=")">
- 			#{jobId}
-        </foreach> 
- 	</delete>
- 	
- 	<update id="updateJob" parameterType="SysJob">
- 		update sys_job
- 		<set>
- 			<if test="jobName != null and jobName != ''">job_name = #{jobName},</if>
- 			<if test="jobGroup != null and jobGroup != ''">job_group = #{jobGroup},</if>
- 			<if test="methodName != null and methodName != ''">method_name = #{methodName},</if>
- 			<if test="methodParams != null">method_params = #{methodParams},</if>
- 			<if test="cronExpression != null and cronExpression != ''">cron_expression = #{cronExpression},</if>
- 			<if test="misfirePolicy != null and misfirePolicy != ''">misfire_policy = #{misfirePolicy},</if>
- 			<if test="status !=null">status = #{status},</if>
- 			<if test="remark != null and remark != ''">remark = #{remark},</if>
- 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
- 			update_time = sysdate()
- 		</set>
- 		where job_id = #{jobId}
-	</update>
- 	
- 	<insert id="insertJob" parameterType="SysJob" useGeneratedKeys="true" keyProperty="jobId">
- 		insert into sys_job(
- 			<if test="jobId != null and jobId != 0">job_id,</if>
- 			<if test="jobName != null and jobName != ''">job_name,</if>
- 			<if test="jobGroup != null and jobGroup != ''">job_group,</if>
- 			<if test="methodName != null and methodName != ''">method_name,</if>
- 			<if test="methodParams != null and methodParams != ''">method_params,</if>
- 			<if test="cronExpression != null and cronExpression != ''">cron_expression,</if>
- 			<if test="misfirePolicy != null and misfirePolicy != ''">misfire_policy,</if>
- 			<if test="status != null and status != ''">status,</if>
- 			<if test="remark != null and remark != ''">remark,</if>
- 			<if test="createBy != null and createBy != ''">create_by,</if>
- 			create_time
- 		)values(
- 			<if test="jobId != null and jobId != 0">#{jobId},</if>
- 			<if test="jobName != null and jobName != ''">#{jobName},</if>
- 			<if test="jobGroup != null and jobGroup != ''">#{jobGroup},</if>
- 			<if test="methodName != null and methodName != ''">#{methodName},</if>
- 			<if test="methodParams != null and methodParams != ''">#{methodParams},</if>
- 			<if test="cronExpression != null and cronExpression != ''">#{cronExpression},</if>
- 			<if test="misfirePolicy != null and misfirePolicy != ''">#{misfirePolicy},</if>
- 			<if test="status != null and status != ''">#{status},</if>
- 			<if test="remark != null and remark != ''">#{remark},</if>
- 			<if test="createBy != null and createBy != ''">#{createBy},</if>
- 			sysdate()
- 		)
-	</insert>
-
 </mapper> 

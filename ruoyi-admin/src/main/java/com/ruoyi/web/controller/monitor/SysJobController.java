@@ -5,19 +5,29 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.page.TableDataInfo;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.framework.modelmapper.BeanConverter;
+import com.ruoyi.framework.util.ApiAssert;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.quartz.domain.SysJob;
 import com.ruoyi.quartz.service.ISysJobService;
+import com.ruoyi.web.controller.monitor.models.SysJobModel;
+
+import io.swagger.annotations.Api;
+
 import com.ruoyi.framework.web.base.BaseController;
 
 /**
@@ -25,81 +35,51 @@ import com.ruoyi.framework.web.base.BaseController;
  * 
  * @author ruoyi
  */
-@Controller
+@Api("调度任务信息")
+@RestController
 @RequestMapping("/monitor/job")
+@Validated
 public class SysJobController extends BaseController
 {
-    private String prefix = "monitor/job";
 
     @Autowired
     private ISysJobService jobService;
 
-    @RequiresPermissions("monitor:job:view")
-    @GetMapping()
-    public String job()
-    {
-        return prefix + "/job";
-    }
-
     @RequiresPermissions("monitor:job:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(SysJob job)
+    public AjaxResult list(@RequestBody SysJobModel model)
     {
-        startPage();
-        List<SysJob> list = jobService.selectJobList(job);
-        return getDataTable(list);
-    }
-
-    @Log(title = "定时任务", businessType = BusinessType.EXPORT)
-    @RequiresPermissions("monitor:job:export")
-    @PostMapping("/export")
-    @ResponseBody
-    public AjaxResult export(SysJob job)
-    {
-        List<SysJob> list = jobService.selectJobList(job);
-        ExcelUtil<SysJob> util = new ExcelUtil<SysJob>(SysJob.class);
-        return util.exportExcel(list, "定时任务");
+        return success(jobService.selectJobList(this.<SysJob>getPage(), BeanConverter.convert(SysJob.class, model)));
     }
 
     @Log(title = "定时任务", businessType = BusinessType.DELETE)
-    @RequiresPermissions("monitor:job:remove")
-    @PostMapping("/remove")
-    @ResponseBody
-    public AjaxResult remove(String ids)
+    @RequiresPermissions("monitor:job:delete")
+    @PostMapping("/delete")
+    public AjaxResult delete(String ids)
     {
-        try
-        {
-            jobService.deleteJobByIds(ids);
-            return success();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return error(e.getMessage());
-        }
+    	jobService.deleteJobByIds(ids);
+    	return success();
     }
-
-    @RequiresPermissions("monitor:job:detail")
-    @GetMapping("/detail/{jobId}")
-    public String detail(@PathVariable("jobId") Long jobId, ModelMap mmap)
+    
+    @RequiresPermissions("monitor:job:list")
+    @PostMapping("/getby")
+    public AjaxResult getby(Long jobId)
     {
-        mmap.put("name", "job");
-        mmap.put("job", jobService.selectJobById(jobId));
-        return prefix + "/detail";
+        return success(jobService.selectJobById(jobId));
     }
-
+    
     /**
      * 任务调度状态修改
      */
     @Log(title = "定时任务", businessType = BusinessType.UPDATE)
     @RequiresPermissions("monitor:job:changeStatus")
     @PostMapping("/changeStatus")
-    @ResponseBody
-    public AjaxResult changeStatus(SysJob job)
+    public AjaxResult changeStatus(@RequestBody SysJobModel model)
     {
-        job.setUpdateBy(ShiroUtils.getLoginName());
-        return toAjax(jobService.changeStatus(job));
+    	SysJob job = jobService.selectJobById(model.getJobId());
+    	job.setStatus(model.getStatus());
+        return toAjax(jobService.changeStatus(BeanConverter.convert(SysJob.class, job)));
     }
 
     /**
@@ -108,64 +88,33 @@ public class SysJobController extends BaseController
     @Log(title = "定时任务", businessType = BusinessType.UPDATE)
     @RequiresPermissions("monitor:job:changeStatus")
     @PostMapping("/run")
-    @ResponseBody
-    public AjaxResult run(SysJob job)
+    public AjaxResult run(Long jobId)
     {
-        return toAjax(jobService.run(job));
-    }
-
-    /**
-     * 新增调度
-     */
-    @GetMapping("/add")
-    public String add()
-    {
-        return prefix + "/add";
+    	SysJob job = jobService.selectJobById(jobId);
+        return success(jobService.run(job));
     }
 
     /**
      * 新增保存调度
      */
     @Log(title = "定时任务", businessType = BusinessType.INSERT)
-    @RequiresPermissions("monitor:job:add")
-    @PostMapping("/add")
-    @ResponseBody
-    public AjaxResult addSave(SysJob job)
+    @RequiresPermissions("monitor:job:create")
+    @PostMapping("/create")
+    public AjaxResult create(@RequestBody @Validated(SysJobModel.Create.class)SysJobModel model)
     {
-        job.setCreateBy(ShiroUtils.getLoginName());
-        return toAjax(jobService.insertJobCron(job));
-    }
-
-    /**
-     * 修改调度
-     */
-    @GetMapping("/edit/{jobId}")
-    public String edit(@PathVariable("jobId") Long jobId, ModelMap mmap)
-    {
-        mmap.put("job", jobService.selectJobById(jobId));
-        return prefix + "/edit";
+    	ApiAssert.isTrue("cron表达式错误", jobService.checkCronExpressionIsValid(model.getCronExpression()));
+        return success(jobService.insertJobCron(BeanConverter.convert(SysJob.class, model)));
     }
 
     /**
      * 修改保存调度
      */
     @Log(title = "定时任务", businessType = BusinessType.UPDATE)
-    @RequiresPermissions("monitor:job:edit")
-    @PostMapping("/edit")
-    @ResponseBody
-    public AjaxResult editSave(SysJob job)
+    @RequiresPermissions("monitor:job:update")
+    @PostMapping("/update")
+    public AjaxResult update(@RequestBody @Validated(SysJobModel.Update.class)SysJobModel model)
     {
-        job.setUpdateBy(ShiroUtils.getLoginName());
-        return toAjax(jobService.updateJobCron(job));
-    }
-    
-    /**
-     * 校验cron表达式是否有效
-     */
-    @PostMapping("/checkCronExpressionIsValid")
-    @ResponseBody
-    public boolean checkCronExpressionIsValid(SysJob job)
-    {
-        return jobService.checkCronExpressionIsValid(job.getCronExpression());
+    	ApiAssert.isTrue("cron表达式错误", jobService.checkCronExpressionIsValid(model.getCronExpression()));
+        return success(jobService.updateJobCron(BeanConverter.convert(SysJob.class, model)));
     }
 }

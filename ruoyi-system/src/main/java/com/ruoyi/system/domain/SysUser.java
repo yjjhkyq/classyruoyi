@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.annotation.Excel.Type;
 import com.ruoyi.common.base.BaseEntity;
+import com.ruoyi.common.constant.UserConstants;
 /**
  * 用户对象 sys_user
  * 
@@ -109,7 +110,7 @@ public class SysUser extends BaseEntity
 
     public static boolean isAdmin(Long userId)
     {
-        return userId != null && 1L == userId;
+        return userId != null && UserConstants.AdminUserId == userId;
     }
 
     public Long getDeptId()

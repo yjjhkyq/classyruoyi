@@ -1,4 +1,4 @@
-package com.ruoyi.web.restcontroller.system;
+package com.ruoyi.web.controller.system;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +29,8 @@ import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.ISysUserService;
-import com.ruoyi.web.restcontroller.system.models.SysChangeMyPwdModel;
-import com.ruoyi.web.restcontroller.system.models.SysUserModel;
+import com.ruoyi.web.controller.system.models.SysChangeMyPwdModel;
+import com.ruoyi.web.controller.system.models.SysUserModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -24,70 +24,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectJobLogList" parameterType="SysJobLog" resultMap="SysJobLogResult">
 		<include refid="selectJobLogVo"/>
 		<where>
-			<if test="jobName != null and jobName != ''">
-				AND job_name like concat('%', #{jobName}, '%')
+			<if test="sm.jobName != null and sm.jobName != ''">
+				AND job_name like concat('%', #{sm.jobName}, '%')
 			</if>
-			<if test="status != null and status != ''">
-				AND status = #{status}
+			<if test="sm.status != null and sm.status != ''">
+				AND status = #{sm.status}
 			</if>
-			<if test="methodName != null and methodName != ''">
-				AND method_name like concat('%', #{methodName}, '%')
+			<if test="sm.methodName != null and sm.methodName != ''">
+				AND method_name like concat('%', #{sm.methodName}, '%')
 			</if>
-			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-				and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+			<if test="sm.params.beginTime != null and sm.params.beginTime != ''"><!-- 开始时间检索 -->
+				and date_format(create_time,'%y%m%d') &gt;= date_format(#{sm.params.beginTime},'%y%m%d')
 			</if>
-			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-				and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+			<if test="sm.params.endTime != null and sm.params.endTime != ''"><!-- 结束时间检索 -->
+				and date_format(create_time,'%y%m%d') &lt;= date_format(#{sm.params.endTime},'%y%m%d')
 			</if>
 		</where>
 	</select>
 	
-	<select id="selectJobLogAll" resultMap="SysJobLogResult">
-		<include refid="selectJobLogVo"/>
-	</select>
-	
-	<select id="selectJobLogById" parameterType="Long" resultMap="SysJobLogResult">
-		<include refid="selectJobLogVo"/>
-		where job_log_id = #{jobLogId}
-	</select>
-	
-	<delete id="deleteJobLogById" parameterType="Long">
- 		delete from sys_job_log where job_log_id = #{jobLogId}
- 	</delete>
- 	
- 	<delete id="deleteJobLogByIds" parameterType="String">
- 		delete from sys_job_log where job_log_id in
- 		<foreach collection="array" item="jobLogId" open="(" separator="," close=")">
- 			#{jobLogId}
-        </foreach> 
- 	</delete>
- 	
  	<update id="cleanJobLog">
         truncate table sys_job_log
     </update>
- 	
- 	<insert id="insertJobLog" parameterType="SysJobLog">
- 		insert into sys_job_log(
- 			<if test="jobLogId != null and jobLogId != 0">job_log_id,</if>
- 			<if test="jobName != null and jobName != ''">job_name,</if>
- 			<if test="jobGroup != null and jobGroup != ''">job_group,</if>
- 			<if test="methodName != null and methodName != ''">method_name,</if>
- 			<if test="methodParams != null and methodParams != ''">method_params,</if>
- 			<if test="jobMessage != null and jobMessage != ''">job_message,</if>
- 			<if test="status != null and status != ''">status,</if>
- 			<if test="exceptionInfo != null and exceptionInfo != ''">exception_info,</if>
- 			create_time
- 		)values(
- 			<if test="jobLogId != null and jobLogId != 0">#{jobLogId},</if>
- 			<if test="jobName != null and jobName != ''">#{jobName},</if>
- 			<if test="jobGroup != null and jobGroup != ''">#{jobGroup},</if>
- 			<if test="methodName != null and methodName != ''">#{methodName},</if>
- 			<if test="methodParams != null and methodParams != ''">#{methodParams},</if>
- 			<if test="jobMessage != null and jobMessage != ''">#{jobMessage},</if>
- 			<if test="status != null and status != ''">#{status},</if>
- 			<if test="exceptionInfo != null and exceptionInfo != ''">#{exceptionInfo},</if>
- 			sysdate()
- 		)
-	</insert>
-
 </mapper> 

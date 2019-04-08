@@ -1,4 +1,4 @@
-package com.ruoyi.web.restcontroller.system.models;
+package com.ruoyi.web.controller.system.models;
 import javax.validation.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;

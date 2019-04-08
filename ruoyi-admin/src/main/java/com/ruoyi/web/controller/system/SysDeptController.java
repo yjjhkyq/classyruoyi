@@ -1,4 +1,4 @@
-package com.ruoyi.web.restcontroller.system;
+package com.ruoyi.web.controller.system;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ import com.ruoyi.framework.util.ApiAssert;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.service.ISysDeptService;
-import com.ruoyi.web.restcontroller.system.models.SysDeptModel;
+import com.ruoyi.web.controller.system.models.SysDeptModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

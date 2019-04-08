@@ -1,6 +1,7 @@
 package com.ruoyi.framework.aspectj;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.Map;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
@@ -79,7 +80,7 @@ public class LogAspect
 
             // *========数据库日志=========*//
             SysOperLog operLog = new SysOperLog();
-            operLog.setStatus(BusinessStatus.SUCCESS.ordinal());
+            operLog.setStatus(String.valueOf(BusinessStatus.SUCCESS.ordinal()));
             // 请求的地址
             operLog.setOperUrl(ServletUtils.getRequest().getRequestURI());
             if (currentUser != null)
@@ -94,9 +95,10 @@ public class LogAspect
 
             if (e != null)
             {
-                operLog.setStatus(BusinessStatus.FAIL.ordinal());
+                operLog.setStatus(String.valueOf(BusinessStatus.FAIL.ordinal()));
                 operLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
             }
+            operLog.setOperTime(new Date());
             // 设置方法名称
             String className = joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
@@ -126,11 +128,11 @@ public class LogAspect
     public void getControllerMethodDescription(Log log, SysOperLog operLog) throws Exception
     {
         // 设置action动作
-        operLog.setBusinessType(log.businessType().ordinal());
+        operLog.setBusinessType(String.valueOf(log.businessType().ordinal()));
         // 设置标题
         operLog.setTitle(log.title());
         // 设置操作人类别
-        operLog.setOperatorType(log.operatorType().ordinal());
+        operLog.setOperatorType(String.valueOf(log.operatorType().ordinal()));
         // 是否需要保存request，参数和值
         if (log.isSaveRequestData())
         {

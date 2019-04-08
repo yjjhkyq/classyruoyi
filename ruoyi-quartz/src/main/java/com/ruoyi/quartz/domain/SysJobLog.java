@@ -2,6 +2,8 @@ package com.ruoyi.quartz.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.base.BaseEntity;
 
@@ -16,6 +18,7 @@ public class SysJobLog extends BaseEntity
 
     /** ID */
     @Excel(name = "日志序号")
+    @TableId
     private Long jobLogId;
 
     /** 任务名称 */

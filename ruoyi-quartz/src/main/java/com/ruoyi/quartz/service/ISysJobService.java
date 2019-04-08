@@ -1,6 +1,8 @@
 package com.ruoyi.quartz.service;
 
 import java.util.List;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ruoyi.quartz.domain.SysJob;
 
 /**
@@ -16,7 +18,7 @@ public interface ISysJobService
      * @param job 调度信息
      * @return 调度任务集合
      */
-    public List<SysJob> selectJobList(SysJob job);
+    public IPage<SysJob> selectJobList(IPage<SysJob> page, SysJob job);
 
     /**
      * 通过调度任务ID查询调度信息

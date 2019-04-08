@@ -1,4 +1,4 @@
-package com.ruoyi.web.restcontroller.system;
+package com.ruoyi.web.controller.system;
 
 
 import java.util.concurrent.TimeUnit;
@@ -17,7 +17,7 @@ import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.constant.ShiroConstants;
 import com.ruoyi.framework.util.JsonWebTokenUtil;
 import com.ruoyi.framework.web.base.BaseController;
-import com.ruoyi.web.restcontroller.system.models.LoginModel;
+import com.ruoyi.web.controller.system.models.LoginModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

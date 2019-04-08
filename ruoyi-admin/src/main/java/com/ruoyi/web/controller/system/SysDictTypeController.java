@@ -1,4 +1,4 @@
-package com.ruoyi.web.restcontroller.system;
+package com.ruoyi.web.controller.system;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ import com.ruoyi.framework.util.ApiAssert;
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.system.domain.SysDictType;
 import com.ruoyi.system.service.ISysDictTypeService;
-import com.ruoyi.web.restcontroller.system.models.SysDictTypeModel;
+import com.ruoyi.web.controller.system.models.SysDictTypeModel;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
