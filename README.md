@@ -16,39 +16,33 @@
 9.  操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
 10. 定时任务：在线（添加、修改、删除)任务调度包含执行结果日志。
 ## 在线体验
-> admin/123456  
-> 陆陆续续收到一些打赏，为了更好的体验已用于演示服务器升级。谢谢各位小伙伴。
-
-演示地址：http://ruoyi.vip  
-
-文档地址：http://doc.ruoyi.vip
+> 登录账户：admin/123456  
 
 ## 演示图
 
 <table>
     <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/25b5e333768d013d45a990c152dbe4d9d6e.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/dfadf4d864242745486aa0167110dfcbeb8.jpg"/></td>
+        <td><img src="https://github.com/yjjhkyq/images/blob/master/1.png"/></td>
+        <td><img src="https://github.com/yjjhkyq/images/blob/master/SY%7B1KE6Y%5BWKWH(K%25%5DLJ0__P.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/2e1ed87df9b476ed73ed650df20cf009b78.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/91bef110740ba9e36ff00804f8748a787fb.jpg"/></td>
+        <td><img src="https://github.com/yjjhkyq/images/blob/master/2.png"/></td>
+        <td><img src="https://github.com/yjjhkyq/images/blob/master/3.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/9a2851988f4e7433c9322154534865f57d7.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/396293f80b1e8cce8671f56c296bee78a3a.jpg"/></td>
+        <td><img src="https://github.com/yjjhkyq/images/blob/master/4.png"/></td>
+        <td><img src="https://github.com/yjjhkyq/images/blob/master/5.png"/></td>
     </tr>
     <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/787b3b06430a403655b48b9bcd1fa829555.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/a51820009836276b778bc89d4d0e217e26d.jpg"/></td>
+        <td><img src="https://github.com/yjjhkyq/images/blob/master/6.png"/></td>
+        <td><img src="https://github.com/yjjhkyq/images/blob/master/7.png"/></td>
     </tr>
 	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/5fb138478adeda6825e206d21f67ecd0625.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/fa2f027a10707a4eb4fc47d5ea1c3d2b772.jpg"/></td>
+        <td><img src="https://github.com/yjjhkyq/images/blob/master/8.png"/></td>
+        <td><img src="https://github.com/yjjhkyq/images/blob/master/9.png"/></td>
     </tr>
 	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/a714056081523b7dfa782cda866e8be4adc.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/ab4b5797dfb2bc68c4974ad5458bd5f5bcf.jpg"/></td>
+        <td><img src="https://github.com/yjjhkyq/images/blob/master/10.png"/></td>
     </tr>
 </table>
 
