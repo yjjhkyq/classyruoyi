@@ -77,14 +77,25 @@ public class BJwtFilter extends BPathMatchingFilter {
 
     private boolean isJwtSubmission(HttpServletRequest request) {
 
-        String jwt = request.getHeader("Authorization");
+        String jwt = getToken(request);
         return (request instanceof HttpServletRequest)
                 && !StringUtils.isEmpty(jwt);
     }
-
+    
+    private String getToken(HttpServletRequest request) {
+    	 String jwt = request.getHeader("Authorization");
+         if(!StringUtils.isEmpty(jwt)) {
+         	jwt = jwt.replaceFirst("Bearer ", "");
+         	LOGGER.info("jwt:" + jwt);
+         }
+         else {
+         	jwt = request.getParameter("Authorization");
+         	LOGGER.info("jwt:" + jwt);
+         }
+         return jwt;
+    }
     private AuthenticationToken createJwtToken(HttpServletRequest request) {
-        String jwt = request.getHeader("Authorization");
-        jwt = jwt.replaceFirst("Bearer ", "");
+        String jwt = getToken(request);
         return new JwtToken(jwt);
     }
     

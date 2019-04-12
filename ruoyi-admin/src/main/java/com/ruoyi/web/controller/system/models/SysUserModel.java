@@ -39,6 +39,7 @@ public class SysUserModel extends BaseModel{
     private String sex;
 
     /** 用户头像 */
+    @NotBlank(groups= {UpdateMyAvatar.class}, message = "必填！")
     private String avatar;
 
     /** 密码 */
@@ -293,6 +294,10 @@ public class SysUserModel extends BaseModel{
     public interface ResetPassword{
     	
     }
+    
+    public interface UpdateMyAvatar {
+		
+	}
     
    
 }

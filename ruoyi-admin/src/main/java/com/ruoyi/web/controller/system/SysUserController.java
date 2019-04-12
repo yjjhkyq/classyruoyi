@@ -162,7 +162,7 @@ public class SysUserController extends BaseController {
     	return success(userService.selectUserById(getUserId())); 
     }
     
-    @Log(title = "重置密码", businessType = BusinessType.UPDATE)
+    @Log(title = "修改密码", businessType = BusinessType.UPDATE)
     @PostMapping("/changeMyPwd")
     public AjaxResult changePwd(@RequestBody @Validated SysChangeMyPwdModel model)
     {
@@ -206,6 +206,7 @@ public class SysUserController extends BaseController {
         return error();
     }
     
+    @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @GetMapping("/checkMyPassword")
     @ResponseBody
     public boolean checkPassword(String password)
@@ -216,5 +217,22 @@ public class SysUserController extends BaseController {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * 修改用户
+     */
+    @Log(title = "个人信息", businessType = BusinessType.UPDATE)
+    @PostMapping("/updateMyAvatar")
+    @ResponseBody
+    public AjaxResult updateMyAvatar(@RequestBody @Validated(SysUserModel.UpdateMyAvatar.class) SysUserModel user)
+    {
+        SysUser currentUser = userService.selectUserById(getSysUser().getUserId());
+        currentUser.setAvatar(user.getAvatar());
+        if (userService.updateUserInfo(currentUser) > 0)
+        {
+            return success();
+        }
+        return error();
     }
 }
